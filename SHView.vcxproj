@@ -51,7 +51,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <ExceptionHandling>false</ExceptionHandling>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
@@ -70,7 +69,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <ExceptionHandling>false</ExceptionHandling>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
@@ -86,6 +84,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\gl3w.cpp" />
+    <ClCompile Include="src\gl_util\Shader.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\math\geometry.cpp" />
     <ClCompile Include="src\math\MatrixTransform.cpp" />
@@ -96,6 +95,13 @@
     <ClInclude Include="3rdparty\include\gl3\gl3w.h" />
     <ClInclude Include="3rdparty\include\gl\glfw.h" />
     <ClInclude Include="src\glfw_gl3.hpp" />
+    <ClInclude Include="src\gl_util\BufferObject.hpp" />
+    <ClInclude Include="src\gl_util\Framebuffer.hpp" />
+    <ClInclude Include="src\gl_util\Renderbuffer.hpp" />
+    <ClInclude Include="src\gl_util\Shader.hpp" />
+    <ClInclude Include="src\gl_util\ShaderProgram.hpp" />
+    <ClInclude Include="src\gl_util\Texture.hpp" />
+    <ClInclude Include="src\gl_util\VertexArrayObject.hpp" />
     <ClInclude Include="src\Heatwave.hpp" />
     <ClInclude Include="src\math\geometry.hpp" />
     <ClInclude Include="src\math\Matrix.hpp" />
