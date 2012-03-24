@@ -1,7 +1,11 @@
 #include "math/Quaternion.hpp"
 #include "math/misc.hpp"
+#include "gl_util/VertexArrayObject.hpp"
+#include "gl_util/Shader.hpp"
+#include "gl_util/ShaderProgram.hpp"
 
 #include <iostream>
+#include <fstream>
 #include "glfw_gl3.hpp"
 #include <GL3/gl3w.h>
 
@@ -71,15 +75,49 @@ int main(int argc, char *argv[])
 		return 1;
 
 	{
-		bool running = true;
-
 		glClearColor(0.0f, 0.0f, 0.0f, 1.f);
-		glEnable(GL_CULL_FACE);
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND);
+		//glEnable(GL_CULL_FACE);
 		//glEnable(GL_DEPTH_CLAMP);
 		glFrontFace(GL_CW);
 		glEnable(GL_FRAMEBUFFER_SRGB);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+		gl::VertexArrayObject dummy_vao;
+		dummy_vao.bind();
+
+		gl::ShaderProgram shader_prog;
+
+		{
+			gl::Shader vert_shader(GL_VERTEX_SHADER);
+			gl::Shader frag_shader(GL_FRAGMENT_SHADER);
+
+			{
+				std::ifstream f("data/shaders/fullscreen_triangle.vert");
+				vert_shader.setSource(f);
+			}
+			{
+				std::ifstream f("data/shaders/sh_skybox.frag");
+				frag_shader.setSource(f);
+			}
+
+			vert_shader.compile();
+			frag_shader.compile();
+
+			vert_shader.printInfoLog(std::cout);
+			frag_shader.printInfoLog(std::cout);
+
+			shader_prog.attachShader(vert_shader);
+			shader_prog.attachShader(frag_shader);
+
+			shader_prog.link();
+			shader_prog.printInfoLog(std::cout);
+		}
+
+		shader_prog.use();
+
+		bool running = true;
 		double elapsed_game_time = 0.;
 		double elapsed_real_time = 0.;
 		double last_frame_time;
@@ -121,6 +159,8 @@ int main(int argc, char *argv[])
 
 				elapsed_game_time += 1./60.;
 			}
+
+			glDrawArrays(GL_TRIANGLES, 0, 3);
 
 			glfwSwapBuffers();
 
