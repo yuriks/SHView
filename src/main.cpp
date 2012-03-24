@@ -117,6 +117,8 @@ int main(int argc, char *argv[])
 
 		shader_prog.use();
 
+		GLint uloc_Rotation = shader_prog.getUniformLocation("u_Rotation");
+
 		bool running = true;
 		double elapsed_game_time = 0.;
 		double elapsed_real_time = 0.;
@@ -151,8 +153,8 @@ int main(int argc, char *argv[])
 
 				float x_mdelta = float(cur_mouse_pos[0] - last_mouse_pos[0]);
 				float y_mdelta = float(cur_mouse_pos[1] - last_mouse_pos[1]);
-				//rot_amount = math::Quaternion(math::up, -x_mdelta * MOUSE_ROT_SPEED) * rot_amount;
-				//rot_amount = math::Quaternion(math::right, -y_mdelta * MOUSE_ROT_SPEED) * rot_amount;
+				rot_amount = Quaternion(vec3_up,    -x_mdelta * MOUSE_ROT_SPEED) * rot_amount;
+				rot_amount = Quaternion(vec3_right, -y_mdelta * MOUSE_ROT_SPEED) * rot_amount;
 
 				last_mouse_pos[0] = cur_mouse_pos[0];
 				last_mouse_pos[1] = cur_mouse_pos[1];
@@ -160,6 +162,21 @@ int main(int argc, char *argv[])
 				elapsed_game_time += 1./60.;
 			}
 
+			mat3x4 rot_mat = matrixFromQuaternion(rot_amount);
+			const float* m_data = rot_mat.data();
+
+			float tmp_mat3[3*3];
+			tmp_mat3[0] = m_data[0+0];
+			tmp_mat3[1] = m_data[0+1];
+			tmp_mat3[2] = m_data[0+2];
+			tmp_mat3[3] = m_data[4+0];
+			tmp_mat3[4] = m_data[4+1];
+			tmp_mat3[5] = m_data[4+2];
+			tmp_mat3[6] = m_data[8+0];
+			tmp_mat3[7] = m_data[8+1];
+			tmp_mat3[8] = m_data[8+2];
+
+			glUniformMatrix3fv(uloc_Rotation, 1, GL_FALSE, tmp_mat3);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 
 			glfwSwapBuffers();
