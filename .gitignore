@@ -1,0 +1,9 @@
+*.swp
+/*.sdf
+/*.opensdf
+/*.suo
+/*.vcxproj.user
+/Debug/
+/Release/
+/ipch/
+/*.dll
