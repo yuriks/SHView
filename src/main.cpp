@@ -69,6 +69,59 @@ bool init_window()
 	return true;
 }
 
+static const float sh_coeffs[9*3] = {
+	/*
+	// Grace Cathedral
+	// l = 0
+	0.79f, 0.44f, 0.54f,
+
+	// l = 1
+	0.39f, 0.35f, 0.60f,
+	-.34f, -.18f, -.27f,
+	-.29f, -.06f, 0.01f,
+
+	// l = 2
+	-.11f, -.05f, -.12f,
+	-.26f, -.22f, -.47f,
+	-.16f, -.09f, -.15f,
+	0.56f, 0.21f, 0.14f,
+	0.21f, -.05f, -.30f
+	*/
+
+	// Eucalyptus Grove
+	// l = 0
+	0.38f, 0.43f, 0.45f,
+
+	// l = 1
+	0.29f, 0.36f, 0.41f,
+	0.04f, 0.03f, 0.01f,
+	-.10f, -.10f, -.09f,
+
+	// l = 2
+	-.06f, -.06f, -.04f,
+	0.01f, -.01f, -.05f,
+	-.09f, -.13f, -.15f,
+	-.06f, -.05f, -.04f,
+	0.02f, -.00f, -.05f
+
+	/*
+	// l = 0
+	0.f, 0.f, 0.f,
+
+	// l = 1
+	0.f, 0.f, 0.f,
+	0.f, 0.f, 0.f,
+	0.f, 0.f, 0.f,
+
+	// l = 2
+	0.f, 0.f, 0.f,
+	0.f, 0.f, 0.f,
+	0.f, 0.f, 0.f,
+	0.f, 0.f, 0.f,
+	0.f, 0.f, 0.f,
+	*/
+};
+
 int main(int argc, char *argv[])
 {
 	if (!init_window())
@@ -118,6 +171,18 @@ int main(int argc, char *argv[])
 		shader_prog.use();
 
 		GLint uloc_Rotation = shader_prog.getUniformLocation("u_Rotation");
+
+		glUniform3fv(shader_prog.getUniformLocation("u_SHcoef_0p0"), 1, &sh_coeffs[0*3]);
+
+		glUniform3fv(shader_prog.getUniformLocation("u_SHcoef_1n1"), 1, &sh_coeffs[1*3]);
+		glUniform3fv(shader_prog.getUniformLocation("u_SHcoef_1p0"), 1, &sh_coeffs[2*3]);
+		glUniform3fv(shader_prog.getUniformLocation("u_SHcoef_1p1"), 1, &sh_coeffs[3*3]);
+
+		glUniform3fv(shader_prog.getUniformLocation("u_SHcoef_2n2"), 1, &sh_coeffs[4*3]);
+		glUniform3fv(shader_prog.getUniformLocation("u_SHcoef_2n1"), 1, &sh_coeffs[5*3]);
+		glUniform3fv(shader_prog.getUniformLocation("u_SHcoef_2p0"), 1, &sh_coeffs[6*3]);
+		glUniform3fv(shader_prog.getUniformLocation("u_SHcoef_2p1"), 1, &sh_coeffs[7*3]);
+		glUniform3fv(shader_prog.getUniformLocation("u_SHcoef_2p2"), 1, &sh_coeffs[8*3]);
 
 		bool running = true;
 		double elapsed_game_time = 0.;
