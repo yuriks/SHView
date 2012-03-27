@@ -18,7 +18,7 @@ uniform vec3 u_SHcoef_2p2;
 
 vec4 shadeSphere(vec3 dir)
 {
-	dir = dir.xzy * vec3(-1, -1, 1);
+	//dir = dir.xzy * vec3(-1, -1, 1);
 
 	const float c_SHconst_0 = 0.28209479177387814347f; // 1 / (2*sqrt(pi))
 	const float c_SHconst_1 = 0.48860251190291992159f; // sqrt(3 /(4pi))
