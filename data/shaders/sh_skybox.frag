@@ -38,6 +38,21 @@ vec4 shadeSphere(vec3 dir)
 	color += u_SHcoef_2p1 * c_SHconst_2 * (dir.x*dir.z);
 	color += u_SHcoef_2p2 * c_SHconst_4 * (dir.x*dir.x - dir.y*dir.y);
 
+	const float pi = 3.1415926535897932384626433832795f;
+	vec2 plane_vec = normalize(dir.xz);
+	float angle = atan(plane_vec.y, plane_vec.x);
+	angle = angle / pi * 180f + 180f;
+
+	const float axis_threshold = 0.0025f;
+	if (abs(dir.y) < axis_threshold)
+		return vec4(1, 0, 0, 1);
+	if (abs(dir.x) < axis_threshold)
+		return vec4(0, 1, 0, 1);
+	if (abs(dir.z) < axis_threshold)
+		return vec4(0, 0, 1, 1);
+	if (angle / 30f - floor(angle / 30f) < 0.025f)
+		return vec4(1, 1, 1, 1);
+
 	//return vec4(-color.r, color.r, 0, 1);
 	return vec4(color, 1);
 }
